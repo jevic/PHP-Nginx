@@ -2,18 +2,13 @@
 # Description: PHP install script For Docker
 # Date: 2016-08-25
 # jie.yang  zxf668899@163.com
-# Variable declaration ###
 # Please after yum execute the script!!
 # yum install -y gcc gcc-c++ apr-devel apr-util-devel unzip cmake libtool perl-devel perl-ExtUtils-Embed GeoIP GeoIP-devel make
 # yum install -y git wget unzip
 #
 Sdir=${PWD}
 Bsdir=${PWD}/BasicPackage
-###
-for Package in ${Bsdir}/*.tar.gz
-do
-   tar zxf $Package
-done
+Exdir=${PWD}/PHP-Extend
 ###
 openssl=${Sdir}/openssl-1.0.2h
 nghttp2=${Sdir}/nghttp2
@@ -34,27 +29,18 @@ libevent=${Sdir}/libevent-2.0.21-stable
 mhash=${Sdir}/mhash-0.9.9.9
 libunwind=${Sdir}/libunwind-1.1
 gperftools=${Sdir}/gperftools-2.1
-
 #####   PHP Variable declaration  ######
 php7=${Sdir}/php-7.0.10
 basedir=/usr/local/php
 cfile=/usr/local/php/etc
-
-#### PHP Extend Package Path #####
-Exdir=${PWD}/PHP-Extend
-####
-for Egz in $Exdir/*.tar.gz;
-do
-  tar zxf $Egz
-done
-###
+### PHP Extend Package Path
 phpredis=${Sdir}/phpredis-php7
 libmemcache=${Sdir}/libmemcached-1.0.18
 phpmemcache=${Sdir}/php-memcached-php7
 phpmongo=${Sdir}/mongo-php-driver
 phpssdb=${Sdir}/phpssdb-php7
 runkit7=${Sdir}/runkit7-master
-
+swoole=${Sdir}/swoole-src-1.8.10-stable
 #### Nginx Variable declaration #####
 Nginx=${Sdir}/nginx-1.11.3
 Ndir=/usr/local/nginx
@@ -67,6 +53,15 @@ Nlock=${Ndir}/system/lock/nginx
 Cbody=${Nsystmp}/client_body
 Proxy=${Nsystmp}/proxy
 Fastcgi=${Nsystmp}/fastcgi
+### Add www User
+groupadd www
+useradd -r -g www
+### Unpack the Basic installation package
+set -e
+for Package in ${Bsdir}/*.tar.gz
+do
+   tar zxf $Package
+done
 
 #####   Dependent environment install ####
 cd $openssl && \
@@ -165,9 +160,6 @@ make && make install
 echo "/usr/local/lib" > /etc/ld.so.conf.d/usr_local_lib.conf
 ldconfig
 
-groupadd www
-useradd -r -g www www 
-
 #### PHP install ###
 cd $php7
 ./configure --prefix=/usr/local/php \
@@ -195,9 +187,13 @@ cp ${cfile}/php-fpm.d/www.conf.default ${cfile}/php-fpm.d/www.conf
 sed -i 's/user = nobody/user = www/g' ${cfile}/php-fpm.d/www.conf
 sed -i 's/group = nobody/group = www/g' ${cfile}/php-fpm.d/www.conf
 
-
-
 ################  PHP Extend install ####
+# Unpack the Extend installation package
+for Egz in $Exdir/*.tar.gz
+do
+  tar zxf $Egz
+done
+
 ## PHP redis install
 cd $phpredis
 /usr/local/php/bin/phpize
@@ -210,11 +206,9 @@ cd $libmemcache
 make && make install
 
 cd $phpmemcache
-/usr/local/php/bin/phpize
 ./configure --with-php-config=/usr/local/php/bin/php-config \
 --with-libmemcached-dir=/usr/local/libmemcached
 make && make install
-
 
 ###Install mongo-php-driver 
 # git clone https://github.com/mongodb/mongo-php-driver
@@ -227,12 +221,10 @@ cd $phpmongo
 make && make install 
 
 ### PHP ssdb install
-## php-ssdb
 cd $phpssdb
 /usr/local/php/bin/phpize
 ./configure --with-php-config=/usr/local/php/bin/php-config
 make && make install
-
 
 ### Runkit7 
 ##git clone https://github.com/runkit7/runkit7.git
@@ -281,9 +273,9 @@ make && make install
 mkdir -p /usr/local/nginx/system/temp/client_body
 ln -s /usr/local/nginx/nginx /usr/bin/nginx
 ####
-mv ${PWD}/entrypoint.sh /
+mv ${PWD}/entrypoint.sh / && \
 chmod +x /entrypoint.sh
-cat ${PWD}/nginx.conf > /usr/local/nginx/etc/nginx.conf
+cat ${PWD}/nginx.conf > /usr/local/nginx/etc/nginx.conf && \
 cat >> /usr/local/nginx/html/info.php << EOF
 <?php
 phpinfo();
