@@ -1,7 +1,9 @@
 PHP (7.0.10) & Nginx (1.11.3)
 ====
-[![image]](http://nginx.org)[![PHP]](http://www.php.net/)
-[image]: http://nginx.org/nginx.png "Nginx" [PHP]: http://php.net/images/logo.php "PHP"
+[![image]](http://www.php.net/)        
+[image]: http://php.net/images/logo.php "PHP"
+[![image]](http://nginx.org)        
+[image]: http://nginx.org/nginx.png "Nginx" 
 
 * Installed Using Swoole Framework
 * Date: Fri Sep  9 19:47:05 CST 2016
