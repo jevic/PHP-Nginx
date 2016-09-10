@@ -1,16 +1,16 @@
-# PHP (7.0.10) & Nginx (1.11.3)
-# Installed using Swoole Framework
-# Date: Fri Sep  9 19:47:05 CST 2016
-# MAINTAINER  jay.yang  zxf668899@163.com
-# Please after yum execute the script!!
-# Dependent Package:
-# yum install -y gcc gcc-c++ apr-devel apr-util-devel cmake libtool 
-# yum install -y perl-devel perl-ExtUtils-Embed GeoIP GeoIP-devel make
-#
-Nginx-PHP7-SourcePackage/
-├── BasicPackage   
-│   ├── curl-7.44.0.tar.gz
-│   ├── fontconfig-2.10.2.tar.gz
+##### PHP (7.0.10) & Nginx (1.11.3)
+##### Installed using Swoole Framework
+##### Date: Fri Sep  9 19:47:05 CST 2016
+##### MAINTAINER  jay.yang  zxf668899@163.com
+##### Please after yum execute the script!!
+##### Dependent Package:
+##### yum install -y gcc gcc-c++ apr-devel apr-util-devel cmake libtool 
+##### yum install -y perl-devel perl-ExtUtils-Embed GeoIP GeoIP-devel make
+#####
+Nginx-PHP7-SourcePackage/\<br>
+├── BasicPackage\<br>
+│   ├── curl-7.44.0.tar.gz\<br>
+│   ├── fontconfig-2.10.2.tar.gz\<br>
 │   ├── freetype-2.4.0.tar.gz
 │   ├── gd-2.0.35.tar.gz
 │   ├── gperftools-2.1.tar.gz
