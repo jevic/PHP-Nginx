@@ -8,9 +8,10 @@ PHP (7.0.10) & Nginx (1.11.3)
 * Date: Fri Sep  9 19:47:05 CST 2016
 * MAINTAINER    jay.yang    zxf668899@163.com
 * Please after yum execute the script!!
-* Dependent Package:
-		yum install -y gcc gcc-c++ apr-devel apr-util-devel cmake libtool<br> 
-		yum install -y perl-devel perl-ExtUtils-Embed GeoIP GeoIP-devel make<br>
+
+###### Dependent Package:
+		yum install -y gcc gcc-c++ apr-devel apr-util-devel cmake libtool
+		yum install -y perl-devel perl-ExtUtils-Embed GeoIP GeoIP-devel make
 
 ###### Nginx-PHP7-SourcePackage/
     ├── BasicPackage
@@ -36,10 +37,10 @@ PHP (7.0.10) & Nginx (1.11.3)
     │   ├── php-5.6.15.tar.gz
     │   ├── php-7.0.10.tar.gz
     │   └── zlib-1.2.7.tar.gz
-    ├── docker-install.sh	* Install Script
-    ├── entrypoint.sh		* Service Start Script
+    ├── docker-install.sh	** Install Script
+    ├── entrypoint.sh		**Service Start Script
     ├── nginx.conf
-    ├── PHP-Extend		* Extend Package
+    ├── PHP-Extend		** Extend Package
     │   ├── libmemcached-1.0.18.tar.gz
     │   ├── mongo-php-driver.tar.gz
     │   ├── php-memcached-php7.tar.gz
