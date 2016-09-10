@@ -37,10 +37,10 @@ PHP (7.0.10) & Nginx (1.11.3)
     │   ├── php-5.6.15.tar.gz
     │   ├── php-7.0.10.tar.gz
     │   └── zlib-1.2.7.tar.gz
-    ├── docker-install.sh	** Install Script
-    ├── entrypoint.sh		**Service Start Script
+    ├── docker-install.sh	*Install Script
+    ├── entrypoint.sh		*Service Start Script
     ├── nginx.conf
-    ├── PHP-Extend		** Extend Package
+    ├── PHP-Extend		*Extend Package
     │   ├── libmemcached-1.0.18.tar.gz
     │   ├── mongo-php-driver.tar.gz
     │   ├── php-memcached-php7.tar.gz
