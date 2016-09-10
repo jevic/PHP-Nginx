@@ -1,8 +1,8 @@
 PHP (7.0.10) & Nginx (1.11.3)
 ====
-[![PHP]](http://www.php.net/) [![image]](http://nginx.org) 
+[![PHP]](http://www.php.net/) [![Nginx]](http://nginx.org) 
 [PHP]: http://php.net/images/logo.php "PHP"
-[image]: http://nginx.org/nginx.png "Nginx" 
+[Nginx]: http://nginx.org/nginx.png "Nginx" 
 
 * Installed Using Swoole Framework
 * Date: Fri Sep  9 19:47:05 CST 2016
@@ -48,70 +48,5 @@ PHP (7.0.10) & Nginx (1.11.3)
 │   ├── runkit7-master.tar.gz<br>
 │   └── swoole-src-1.8.10-stable.tar.gz<br>
 └── README.md<br>
-<ul class=" list-paddingleft-2" style="list-style-type: square;">
-    <li>
-        <p style="text-align: left;">
-            abc<br/>
-        </p>
-    </li>
-    <li>
-        <p style="text-align: left;">
-            adf
-        </p>
-    </li>
-</ul>
-<ol class=" list-paddingleft-2" style="list-style-type: decimal;">
-    <li>
-        <p style="text-align: left;">
-            dafd
-        </p>
-    </li>
-    <li>
-        <p style="text-align: left;">
-            dfadf
-        </p>
-    </li>
-</ol>
-<p style="text-align: left;">
-    <span style="font-size: 18px;"><strong>dfadsf</strong></span>
-</p>
-<p style="text-align: left;">
-    <br/>
-</p>
-<table>
-    <tbody>
-        <tr>
-            <td width="211" valign="top"></td>
-            <td width="211" valign="top"></td>
-            <td width="211" valign="top"></td>
-        </tr>
-        <tr>
-            <td width="211" valign="top"></td>
-            <td width="211" valign="top"></td>
-            <td width="211" valign="top"></td>
-        </tr>
-    </tbody>
-</table>
-<p>
-    <br/>
-</p>
-<p>
-    <br/>
-</p>
-<p>
-    import os
-</p>
-<p style="text-align: left;">
-    x = 1
-</p>
-<p style="text-align: left;">
-    y = 2
-</p>
-<p style="text-align: left;">
-    s = x+y
-</p>
-<p style="text-align: left;">
-    print s
-</p>
 
 2 directories, 33 files
