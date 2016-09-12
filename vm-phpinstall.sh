@@ -66,6 +66,11 @@ for Package in ${Bsdir}/*.tar.gz
 do
    tar zxf $Package
 done
+###Unpack the Extend installation package
+for egz in ${Exdir}/*.tar.gz
+do
+  tar zxf $egz
+done
 
 #### Dependent environment install ####
 cd $openssl && \
@@ -196,11 +201,6 @@ sed -i 's/user = nobody/user = www/g' ${cfile}/php-fpm.d/www.conf && \
 sed -i 's/group = nobody/group = www/g' ${cfile}/php-fpm.d/www.conf
 
 ################  PHP Extend install ####
-###Unpack the Extend installation package
-for Egz in $Exdir/*.tar.gz
-do
-  tar zxf $Egz
-done
 ## PHP redis install
 cd $phpredis
 /usr/local/php/bin/phpize
