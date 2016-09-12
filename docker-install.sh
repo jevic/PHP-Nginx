@@ -4,7 +4,7 @@
 # jie.yang  zxf668899@163.com
 # Please after yum execute the script!!
 # yum install -y gcc gcc-c++ apr-devel apr-util-devel unzip cmake libtool perl-devel perl-ExtUtils-Embed GeoIP GeoIP-devel make
-# yum install -y git wget unzip
+# yum install -y git wget 
 #
 Sdir=${PWD}
 Bsdir=${PWD}/BasicPackage
@@ -55,12 +55,18 @@ Proxy=${Nsystmp}/proxy
 Fastcgi=${Nsystmp}/fastcgi
 ### Add www User
 groupadd www
-useradd -r -g www
+useradd -r -g www www
 ### Unpack the Basic installation package
 set -e
 for Package in ${Bsdir}/*.tar.gz
 do
    tar zxf $Package
+done
+
+# Unpack the Extend installation package
+for egz in ${Exdir}/*.tar.gz
+do
+  tar zxf $egz
 done
 
 #####   Dependent environment install ####
@@ -157,7 +163,7 @@ make CFLAGS=-fPIC install
 cd $gperftools
 ./configure --enable-frame-pointers
 make && make install
-echo "/usr/local/lib" > /etc/ld.so.conf.d/usr_local_lib.conf
+echo -e "/usr/local/lib" > /etc/ld.so.conf.d/usr_local_lib.conf
 ldconfig
 
 #### PHP install ###
@@ -186,13 +192,12 @@ echo -e '\nexport PATH=${basedir}/bin:${basedir}/sbin:$PATH\n' >> /etc/profile &
 cp ${cfile}/php-fpm.d/www.conf.default ${cfile}/php-fpm.d/www.conf
 sed -i 's/user = nobody/user = www/g' ${cfile}/php-fpm.d/www.conf
 sed -i 's/group = nobody/group = www/g' ${cfile}/php-fpm.d/www.conf
+#sed -i 's#listen = 127.0.0.1:9000#listen = /dev/shm/php1.sock#g' ${cfile}/php-fpm.d/www.conf
+#sed -i 's#;listen.owner = nobody#listen.owner = www#g' ${cfile}/php-fpm.d/www.conf
+#sed -i 's#;listen.group = onbody#listen.group = www#g' ${cfile}/php-fpm.d/www.conf
+#sed -i 's#;listen.mode = 0660#listen.mode = 0660#g ${cfile}/php-fpm.d/www.conf
 
 ################  PHP Extend install ####
-# Unpack the Extend installation package
-for Egz in $Exdir/*.tar.gz
-do
-  tar zxf $Egz
-done
 
 ## PHP redis install
 cd $phpredis
@@ -206,6 +211,7 @@ cd $libmemcache
 make && make install
 
 cd $phpmemcache
+/usr/local/php/bin/phpize
 ./configure --with-php-config=/usr/local/php/bin/php-config \
 --with-libmemcached-dir=/usr/local/libmemcached
 make && make install
@@ -273,9 +279,9 @@ make && make install
 mkdir -p /usr/local/nginx/system/temp/client_body
 ln -s /usr/local/nginx/nginx /usr/bin/nginx
 ####
-mv ${PWD}/entrypoint.sh / && \
+mv ${Sdir}/entrypoint.sh / && \
 chmod +x /entrypoint.sh
-cat ${PWD}/nginx.conf > /usr/local/nginx/etc/nginx.conf && \
+cat ${Sdir}/nginx.conf > /usr/local/nginx/etc/nginx.conf && \
 cat >> /usr/local/nginx/html/info.php << EOF
 <?php
 phpinfo();
