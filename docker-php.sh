@@ -41,9 +41,10 @@ phpmongo=${Sdir}/mongo-php-driver
 phpssdb=${Sdir}/phpssdb-php7
 runkit7=${Sdir}/runkit7-master
 swoole=${Sdir}/swoole-src-1.8.10-stable
-### Add www User
-groupadd apache
-useradd -r -g apache apache
+geoip=${Sdir}/geoip
+### Add  User
+groupadd -g 1000 apache
+useradd -u 510 -r -g apache apache 
 ### Unpack the Basic installation package
 set -e
 for Package in ${Bsdir}/*.tar.gz
@@ -174,10 +175,10 @@ ln -s ${basedir}/bin/php-config /usr/bin/
 ln -s ${basedir}/bin/phpize /usr/bin/
 ln -s ${basedir}/etc/php.ini /etc/
 cp ${cfile}/php-fpm.conf.default ${cfile}/php-fpm.conf
-cp -r ${php7}/sapi/fpm/init.d.php-fpm.in /etc/init.d/php-fpm
+#cp -r ${php7}/sapi/fpm/init.d.php-fpm.in /etc/init.d/php-fpm
 cp ${cfile}/php-fpm.d/www.conf.default ${cfile}/php-fpm.d/www.conf
-sed -i 's/user = nobody/user = www/g' ${cfile}/php-fpm.d/www.conf
-sed -i 's/group = nobody/group = www/g' ${cfile}/php-fpm.d/www.conf
+sed -i 's/user = nobody/user = apache/g' ${cfile}/php-fpm.d/www.conf
+sed -i 's/group = nobody/group = apache/g' ${cfile}/php-fpm.d/www.conf
 sed -i 's#listen = 127.0.0.1:9000#listen = /dev/shm/php1.sock#g' ${cfile}/php-fpm.d/www.conf
 sed -i 's#;listen.owner = nobody#listen.owner = apache#g' ${cfile}/php-fpm.d/www.conf
 sed -i 's#;listen.group = onbody#listen.group = apache#g' ${cfile}/php-fpm.d/www.conf
@@ -231,6 +232,14 @@ cd $swoole
 ./configure --with-php-config=/usr/local/php/bin/php-config
 make && make install
 
+### GeoIP
+cd ${Exdir} && mv GeoLiteCity.dat /usr/share/GeoIP/ && \
+ln -s /usr/share/GeoIP/GeoLiteCity.dat /usr/share/GeoIP/GeoIPCity.dat
+cd $geoip
+/usr/local/php/bin/phpize
+./configure --with-php-config=/usr/local/php/bin/php-config --with-geoip
+make && make install
+
 ### Add extenssion ###
 Phpini=/etc/php.ini
 echo -e "extension=redis.so" >> $Phpini
@@ -239,3 +248,4 @@ echo -e "extension=ssdb.so" >> $Phpini
 echo -e "extension=mongodb.so" >> $Phpini
 echo -e "extension=runkit.so" >> $Phpini
 echo -e "extension=swoole.so" >> $Phpini
+echo -e "extension=geoip.so" >> $Phpini
