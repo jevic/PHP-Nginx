@@ -44,6 +44,7 @@ phpmongo=${Sdir}/mongo-php-driver
 phpssdb=${Sdir}/phpssdb-php7
 runkit7=${Sdir}/runkit7-master
 swoole=${Sdir}/swoole-src-1.8.10-stable
+geoip=${Sdir}/geoip
 ## Nginx Variable declaration 
 Nginx=${Sdir}/nginx-1.11.3
 Ndir=/usr/local/nginx
@@ -56,9 +57,9 @@ Nlock=${Ndir}/system/lock/nginx
 Cbody=${Nsystmp}/client_body
 Proxy=${Nsystmp}/proxy
 Fastcgi=${Nsystmp}/fastcgi
-### Add www User
-groupadd www
-useradd -r -g www www
+### Add User
+groupadd -g 1000 apache
+useradd -u 510 -r -g apache apache 
 ###
 ## Unpack the Basic installation package
 set -e
@@ -194,11 +195,11 @@ ln -s ${basedir}/bin/phpize /usr/bin/ && \
 ln -s ${basedir}/sbin/php-fpm /usr/sbin/ && \
 ln -s ${basedir}/etc/php.ini /etc/ && \
 cp ${cfile}/php-fpm.conf.default ${cfile}/php-fpm.conf && \
-cp -r ${php7}/sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm && \
+cp -r ${php7}/sapi/fpm/init.d.php-fpm.in /etc/init.d/php-fpm && \
 echo -e '\nexport PATH=${basedir}/bin:${basedir}/sbin:$PATH\n' >> /etc/profile && source /etc/profile
 cp ${cfile}/php-fpm.d/www.conf.default ${cfile}/php-fpm.d/www.conf && \
-sed -i 's/user = nobody/user = www/g' ${cfile}/php-fpm.d/www.conf && \
-sed -i 's/group = nobody/group = www/g' ${cfile}/php-fpm.d/www.conf
+sed -i 's/user = nobody/user = apache/g' ${cfile}/php-fpm.d/www.conf && \
+sed -i 's/group = nobody/group = apache/g' ${cfile}/php-fpm.d/www.conf
 
 ################  PHP Extend install ####
 ## PHP redis install
@@ -247,6 +248,14 @@ cd $swoole
 ./configure --with-php-config=/usr/local/php/bin/php-config
 make && make install
 
+### GeoIP
+cd ${Exdir} && mv GeoLiteCity.dat /usr/share/GeoIP/ && \
+ln -s /usr/share/GeoIP/GeoLiteCity.dat /usr/share/GeoIP/GeoIPCity.dat
+cd $geoip
+/usr/local/php/bin/phpize
+./configure --with-php-config=/usr/local/php/bin/php-config --with-geoip
+make && make install
+
 ### Add extenssion ###
 Phpini=/etc/php.ini
 echo -e "extension=redis.so" >> $Phpini && \
@@ -255,11 +264,12 @@ echo -e "extension=ssdb.so" >> $Phpini
 echo -e "extension=mongodb.so" >> $Phpini
 echo -e "extension=runkit.so" >> $Phpini
 echo -e "extension=swoole.so" >> $Phpini
+echo -e "extension=geoip.so" >> $Phpini
 
 #### Nginx install ###
 #
 cd $Nginx
-./configure --user=www --group=www --prefix=${Ndir} \
+./configure --user=apache --group=apache --prefix=${Ndir} \
 --sbin-path=${Ndir} --conf-path=${Nconf} --error-log-path=${Nerror} \
 --http-log-path=${Naccess} --pid-path=${Npid} \
 --lock-path=${Nlock} \
@@ -278,8 +288,7 @@ cd $Nginx
 --with-http_v2_module
 make && make install 
 mkdir -p /usr/local/nginx/system/temp/client_body
-ln -s /usr/local/nginx/nginx /usr/bin/nginx
+mkdir /usr/local/nginx/etc/conf.d
 sed -i 2d /usr/local/nginx/etc/nginx.conf
-sed -i '1 i user www;' /usr/local/nginx/etc/nginx.conf
-chmod -R 770 /usr/local/nginx
-chown -R www:www /usr/local/nginx
+sed -i '1 i user apache;' /usr/local/nginx/etc/nginx.conf
+chown -R apache:apache /usr/local/nginx
