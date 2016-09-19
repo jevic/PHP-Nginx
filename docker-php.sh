@@ -183,6 +183,7 @@ sed -i 's#listen = 127.0.0.1:9000#listen = /dev/shm/php1.sock#g' ${cfile}/php-fp
 sed -i 's#;listen.owner = nobody#listen.owner = apache#g' ${cfile}/php-fpm.d/www.conf
 sed -i 's#;listen.group = onbody#listen.group = apache#g' ${cfile}/php-fpm.d/www.conf
 sed -i 's#;listen.mode = 0660#listen.mode = 0660#g' ${cfile}/php-fpm.d/www.conf
+sed -i 's/;daemonize = yes/daemonize = no/g' /usr/local/php/etc/php-fpm.conf
 
 ################  PHP Extend install ####
 
