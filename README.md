@@ -1,7 +1,10 @@
 PHP (7.0.10) & Nginx (1.11.3)
 ====
 
-[![PHP]](http://www.php.net/) [![Nginx]](http://nginx.org) 
+[![Nginx]](http://nginx.org)
+[![PHP]](http://www.php.net/) 
+[Nginx]:http://nginx.org/nginx.png "Nginx"
+[PHP]:http://php.net/images/logo.php "PHP"
 
 
 
